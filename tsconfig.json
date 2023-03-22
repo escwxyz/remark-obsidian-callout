@@ -1,0 +1,17 @@
+{
+  "include": ["src", "test"],
+  "compilerOptions": {
+    "lib": ["es2021"],
+    "module": "es2022",
+    "target": "es2021",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "dist",
+    "declaration": true,
+    "declarationDir": "dist",
+    "moduleResolution": "node",
+    "downlevelIteration": true
+  }
+}
