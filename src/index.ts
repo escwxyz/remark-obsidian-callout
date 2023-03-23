@@ -27,6 +27,7 @@ interface HtmlNode extends Node {
 
 export interface Config {
   dataAttribute: string;
+  blockquoteClass?: string;
   titleClass: string;
   titleTextTagName: string;
   titleTextClass: string;
@@ -38,6 +39,7 @@ export interface Config {
 
 const defaultConfig: Config = {
   dataAttribute: "callout",
+  blockquoteClass: undefined,
   titleClass: "callout-title",
   titleTextTagName: "div",
   titleTextClass: "callout-title-text",
@@ -82,8 +84,18 @@ function containsKey(obj: Callout, str: string): boolean {
 }
 
 const plugin: Plugin = (customConfig?: Partial<Config>) => {
+  const mergedConfig = {
+    ...defaultConfig,
+    ...customConfig,
+    callouts: {
+      ...defaultConfig.callouts,
+      ...customConfig?.callouts,
+    },
+  };
+
   const {
     dataAttribute,
+    blockquoteClass,
     titleClass,
     iconTagName,
     iconClass,
@@ -91,58 +103,67 @@ const plugin: Plugin = (customConfig?: Partial<Config>) => {
     titleTextClass,
     titleTextTagName,
     titleTextTransform,
-  } = { ...defaultConfig, ...customConfig };
+  } = mergedConfig;
+
   return function (tree) {
     visit(tree, "blockquote", (node: Node) => {
       if (!("children" in node)) return;
 
-      (node as Parent).children.forEach((child: Node) => {
-        if (child.type === "paragraph") {
-          const value = toString(child);
+      const firstChild = (node as Parent).children[0];
 
-          const matched = value.match(REGEX);
-          if (matched) {
-            const array = REGEX.exec(value);
+      if (firstChild.type === "paragraph") {
+        const value = toString(firstChild);
 
-            const calloutType = array?.[1];
+        const [firstLine, ...remainingLines] = value.split("\n");
+        const remainingContent = remainingLines.join("\n");
 
-            const expandCollapseSign = array?.[2];
+        const matched = firstLine.match(REGEX);
 
-            if (array && calloutType && containsKey(callouts, calloutType)) {
-              const title = titleTextTransform(
-                array.input.slice(matched[0].length)
-              );
+        if (matched) {
+          const array = REGEX.exec(firstLine);
 
-              const htmlNode: HtmlNode = {
-                type: "html",
-                data: {},
-                value: `<div className=${titleClass}>
-                  <${iconTagName} className=${iconClass}>${callouts[calloutType]}</${iconTagName}>
-                  <${titleTextTagName} className=${titleTextClass}>${title}</${titleTextTagName}></div>`,
-              };
+          const calloutType = array?.at(1);
 
-              if (node) {
-                const index = (node as Parent).children.indexOf(child);
-                if (index !== -1) {
-                  (node as Parent).children.splice(index, 1, htmlNode);
-                }
-              }
+          const expandCollapseSign = array?.at(2);
 
-              node.data = {
-                hProperties: {
-                  ...((node.data && node.data.hProperties) || {}),
-                  className: `callout-${calloutType}`,
-                  [`data-${dataAttribute}`]: calloutType,
-                  "data-expandable":
-                    expandCollapseSign !== undefined ? "true" : "false",
-                  "data-expanded":
-                    expandCollapseSign === "+" ? "true" : "false",
-                },
-              };
-            }
+          if (array && calloutType && containsKey(callouts, calloutType)) {
+            const title = array.input.slice(matched[0].length).trim();
+
+            const titleHtmlNode: HtmlNode = {
+              type: "html",
+              data: {},
+              value: `
+              <div class="${titleClass}">
+                <${iconTagName} class="${iconClass}">${
+                callouts[calloutType]
+              }</${iconTagName}>
+             ${
+               title &&
+               `<${titleTextTagName} class="${titleTextClass}">${titleTextTransform(
+                 title
+               )}</${titleTextTagName}>`
+             }
+              </div>
+              <div>${remainingContent}</div>`,
+            };
+
+            (node as Parent).children.splice(0, 1, titleHtmlNode);
+
+            const dataExpandable = Boolean(expandCollapseSign);
+            const dataExpanded = expandCollapseSign === "+";
+
+            node.data = {
+              hProperties: {
+                ...((node.data && node.data.hProperties) || {}),
+                className: blockquoteClass || `${dataAttribute}-${calloutType}`,
+                [`data-${dataAttribute}`]: calloutType,
+                "data-expandable": String(dataExpandable),
+                "data-expanded": String(dataExpanded),
+              },
+            };
           }
         }
-      });
+      }
     });
   };
 };
