@@ -1,8 +1,8 @@
-### What is this?
+### What is this
 
 This is a [remark](https://github.com/remarkjs/remark) plugin that parses [Obsidian's callout](https://help.obsidian.md/Editing+and+formatting/Callouts) syntax, and adds custom data attributes and classes to the HTML elements for further customizations.
 
-### Why?
+### Why
 
 Because I am currently building my digital garden using [Astro](https://astro.build/) and Obsidian. Despite the great support for the Markdown that Astro brings, we still need to some work to customize the rendered output.
 
@@ -13,13 +13,13 @@ Because I am currently building my digital garden using [Astro](https://astro.bu
 First, install the plugin with your favorite package manager:
 
 ```
-npm install remark-obsidian-callout
+npm install remark-obsidian-callout --save-dev
 ```
 
 or with `pnpm`:
 
 ```
-pnpm add remark-obsidian-callout
+pnpm add -D remark-obsidian-callout
 ```
 
 Then in your `astro.config.mjs` config file:
@@ -38,6 +38,36 @@ export default defineConfig({
   },
   // ...
 });
+```
+
+Now we can run the dev server with `pnpm astro dev`.
+
+Say if we are to render an error callout with:
+
+```
+> [!error] This is an error callout
+> This is the content inside callout
+```
+
+in the markdown file.
+
+The callout would be rendered as something like this:
+
+```html
+<blockquote
+  class="callout-error"
+  data-callout="error"
+  data-expandable="false"
+  data-expanded="false"
+>
+  <div class="callout-title">
+    <div class="callout-title-icon">
+      <!-- Predefined SVG here -->
+    </div>
+    <div class="callout-title-text">This is an error callout</div>
+  </div>
+  <div>This is the content inside callout</div>
+</blockquote>
 ```
 
 #### Configuration
@@ -134,6 +164,10 @@ const defaultConfig: Config = {
   },
 };
 ```
+
+### TODOs & Limitations
+
+- [ ] Currently does not support nested callouts, as the usecase of this should be uncommon
 
 ### Credits
 
