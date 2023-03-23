@@ -17,6 +17,12 @@ const bugIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
 const listIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>`;
 const quoteIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"></path><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"></path></svg>`;
 
+/**
+ * Callout object with callout type as its key and icon as its value
+ * @date 3/23/2023 - 5:16:27 PM
+ *
+ * @typedef {Callout}
+ */
 type Callout = Record<string, unknown>;
 
 interface HtmlNode extends Node {
@@ -25,18 +31,90 @@ interface HtmlNode extends Node {
   value: string;
 }
 
+/**
+ * Plugin configuration
+ * @date 3/23/2023 - 5:16:27 PM
+ *
+ * @export
+ * @interface Config
+ * @typedef {Config}
+ */
 export interface Config {
+  /**
+   * the data attribute name to be added to the blockquote
+   * @date 3/23/2023 - 5:16:26 PM
+   *
+   * @type {string}
+   */
   dataAttribute: string;
+  /**
+   * the custom class name to be added to the blockquote, if not specified, use `${dataAttribute}-${calloutType}`
+   * @date 3/23/2023 - 5:16:26 PM
+   *
+   * @type {?string}
+   */
   blockquoteClass?: string;
+  /**
+   * the custom class name to be added to the div, the parent element of icon & title text
+   * @date 3/23/2023 - 5:16:26 PM
+   *
+   * @type {string}
+   */
   titleClass: string;
+  /**
+   * the tag name for the title text element, default to `div`
+   * @date 3/23/2023 - 5:16:26 PM
+   *
+   * @type {string}
+   */
   titleTextTagName: string;
+  /**
+   * the custom class name to be added to the title text element
+   * @date 3/23/2023 - 5:16:26 PM
+   *
+   * @type {string}
+   */
   titleTextClass: string;
+  /**
+   * a function to transform the title text, you can use it to append custom strings
+   * @date 3/23/2023 - 5:16:26 PM
+   *
+   * @type {(title: string) => string}
+   */
   titleTextTransform: (title: string) => string;
+  /**
+   * the tag name for the title icon element, default to `div`
+   * @date 3/23/2023 - 5:16:26 PM
+   *
+   * @type {string}
+   */
   iconTagName: string;
+  /**
+   * the custom class name to be added to the title icon element
+   * @date 3/23/2023 - 5:16:26 PM
+   *
+   * @type {string}
+   */
   iconClass: string;
+  /**
+   * predefined callouts, an object with callout's name as key, its SVG icon as value,
+   *
+   * see https://help.obsidian.md/Editing+and+formatting/Callouts#Supported+types,
+   *
+   * you can customize it by overriding the same callout's icon or passing new callout with customized name and icon
+   * @date 3/23/2023 - 5:16:26 PM
+   *
+   * @type {Record<string, unknown>}
+   */
   callouts: Record<string, unknown>;
 }
 
+/**
+ * Default configuration
+ * @date 3/23/2023 - 5:16:26 PM
+ *
+ * @type {Config}
+ */
 const defaultConfig: Config = {
   dataAttribute: "callout",
   blockquoteClass: undefined,
@@ -79,10 +157,25 @@ const defaultConfig: Config = {
 
 const REGEX = /^\[\!(\w+)\]([+-]?)/;
 
+/**
+ * Check if the str is a valid callout type
+ * @date 3/23/2023 - 5:16:26 PM
+ *
+ * @param {Callout} obj
+ * @param {string} str
+ * @returns {boolean}
+ */
 function containsKey(obj: Callout, str: string): boolean {
   return Object.keys(obj).includes(str);
 }
 
+/**
+ * This is a remark plugin that parses Obsidian's callout syntax, and adds custom data attributes and classes to the HTML elements for further customizations.
+ * @date 3/23/2023 - 5:16:26 PM
+ *
+ * @param {?Partial<Config>} [customConfig]
+ * @returns {(tree: any) => void}
+ */
 const plugin: Plugin = (customConfig?: Partial<Config>) => {
   const mergedConfig = {
     ...defaultConfig,
