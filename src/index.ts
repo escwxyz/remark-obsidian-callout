@@ -48,12 +48,12 @@ export interface Config {
    */
   dataAttribute: string;
   /**
-   * the custom class name to be added to the blockquote, if not specified, use `${dataAttribute}-${calloutType}`
+   * the custom class name to be added to the blockquote, by default it's `${dataAttribute}-${calloutType}` if not specified
    * @date 3/23/2023 - 5:16:26 PM
    *
-   * @type {?string}
+   * @type {string | undefined}
    */
-  blockquoteClass?: string;
+  blockquoteClass: string | undefined;
   /**
    * the custom class name to be added to the div, the parent element of icon & title text
    * @date 3/23/2023 - 5:16:26 PM

@@ -42,14 +42,12 @@ export default defineConfig({
 
 Now we can run the dev server with `pnpm astro dev`.
 
-Say if we are to render an error callout with:
+Say if we want to render an error callout with:
 
 ```
 > [!error] This is an error callout
 > This is the content inside callout
 ```
-
-in the markdown file.
 
 The callout would be rendered as something like this:
 
@@ -68,6 +66,19 @@ The callout would be rendered as something like this:
   </div>
   <div>This is the content inside callout</div>
 </blockquote>
+```
+
+Now you can customize the callout with some CSS or JavaScript for example:
+
+```css
+blockquote[data-callout] {
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+blockquote[data-callout="error"] {
+  background-color: red;
+}
 ```
 
 #### Configuration
@@ -104,8 +115,8 @@ Config Options:
 export interface Config {
   // the data attribute name to be added to the blockquote
   dataAttribute: string;
-  // the custom class name to be added to the blockquote, if not specified, use `${dataAttribute}-${calloutType}`
-  blockquoteClass?: string;
+  // the custom class name to be added to the blockquote, by default it's `${dataAttribute}-${calloutType}` if not specified
+  blockquoteClass: string | undefined;
   // the custom class name to be added to the div, the parent element of icon & title text
   titleClass: string;
   // the tag name for the title text element, default to `div`
