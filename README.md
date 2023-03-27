@@ -1,3 +1,9 @@
+## remark-obsidian-callout
+
+[![NPM](https://img.shields.io/npm/dw/remark-obsidian-callout?style=for-the-badge)](https://www.npmjs.com/package/remark-obsidian-callout)
+
+A remark plugin to parse Obsidian's callout syntax.
+
 ### What is this
 
 This is a [remark](https://github.com/remarkjs/remark) plugin that parses [Obsidian's callout](https://help.obsidian.md/Editing+and+formatting/Callouts) syntax, and adds custom data attributes and classes to the HTML elements for further customizations.
@@ -10,7 +16,9 @@ Because I am currently building my digital garden using [Astro](https://astro.bu
 
 #### Installation
 
-First, install the plugin with your favorite package manager:
+First, install the plugin with your favorite package manager.
+
+With `npm`:
 
 ```
 npm install remark-obsidian-callout --save-dev
@@ -179,6 +187,10 @@ const defaultConfig: Config = {
 ### TODOs & Limitations
 
 - [ ] Currently does not support nested callouts, as the usecase of this should be uncommon
+
+### Support
+
+If you have any questions or suggestions, feel free to open an issue.
 
 ### Credits
 
