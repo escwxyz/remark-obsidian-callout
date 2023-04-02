@@ -83,7 +83,6 @@ describe("test default behavior", () => {
       <div class="callout-title-icon">${icon}</div>
       <div class="callout-title-text">This is a note callout.</div>
     </div>
-    <div></div>
   </blockquote>`;
 
     expect(normalizeHtml(html)).toBe(normalizeHtml(expectedOutput));
@@ -145,7 +144,6 @@ describe("test default behavior", () => {
       <div class="callout-title-icon">${infoIcon}</div>
       <div class="callout-title-text">This is an info callout.</div>
     </div>
-    <div></div>
   </blockquote>`;
 
     expect(normalizeHtml(html)).toBe(normalizeHtml(expectedOutput));
@@ -174,6 +172,7 @@ describe("test default behavior", () => {
 
     expect(normalizeHtml(html)).not.toBe(normalizeHtml(expectedOutput));
   });
+
 });
 
 describe("test custom settings", () => {

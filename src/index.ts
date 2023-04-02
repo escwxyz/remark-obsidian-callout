@@ -238,7 +238,7 @@ const plugin: Plugin = (customConfig?: Partial<Config>) => {
                )}</${titleTextTagName}>`
              }
               </div>
-              <div>${remainingContent}</div>`,
+              ${remainingContent && `<div>${remainingContent}</div>`}`,
             };
 
             (node as Parent).children.splice(0, 1, titleHtmlNode);
