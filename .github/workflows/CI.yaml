@@ -12,10 +12,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@main
+      - uses: pnpm/action-setup@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@main
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install -g pnpm
-      - run: pnpm install
-      - run: pnpm test
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+      - name: Run tests
+        run: pnpm test
