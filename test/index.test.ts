@@ -54,6 +54,12 @@ describe("test default behavior", () => {
 
   const infoInput = `> [!info] This is an info callout.`;
 
+  it("should ignore empty blockquote", async () => {
+    const html = await parseMarkdown("> ", {}, false);
+    const expectedOutput = `<blockquote></blockquote>`;
+    expect(normalizeHtml(html)).toBe(normalizeHtml(expectedOutput));
+  });
+
   it("should render a note blockquote", async () => {
     const html = await parseMarkdown(noteInput, {}, false);
     const expectedOutput = `
