@@ -7,8 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-update github actions for auto release and plublishing
-
 ### Added
 
-- Changelog
+- update github actions for auto release and plublishing
+
+### Fixed
+
+- fixed empty blockquote (#1)
