@@ -1,20 +1,20 @@
-## remark-obsidian-callout
+# remark-obsidian-callout
 
 [![NPM](https://img.shields.io/npm/dw/remark-obsidian-callout?style=for-the-badge)](https://www.npmjs.com/package/remark-obsidian-callout)
 
 A remark plugin to parse Obsidian's callout syntax.
 
-### What is this
+## What is this
 
 This is a [remark](https://github.com/remarkjs/remark) plugin that parses [Obsidian's callout](https://help.obsidian.md/Editing+and+formatting/Callouts) syntax, and adds custom data attributes and classes to the HTML elements for further customizations.
 
-### Why
+## Why
 
 Because I am currently building my digital garden using [Astro](https://astro.build/) and Obsidian. Despite the great support for the Markdown that Astro brings, we still need to some work to customize the rendered output.
 
-### How to use
+## How to use
 
-#### Installation
+### Installation
 
 First, install the plugin with your favorite package manager.
 
@@ -89,7 +89,7 @@ blockquote[data-callout="error"] {
 }
 ```
 
-#### Configuration
+### Configuration
 
 To configure the plugin, simply add the following options to your `astro.config.mjs` file. For example:
 
@@ -184,14 +184,27 @@ const defaultConfig: Config = {
 };
 ```
 
-### TODOs & Limitations
+## TODOs & Limitations
 
 - [ ] Currently does not support nested callouts, as the usecase of this should be uncommon
 
-### Support
+## Support
 
 If you have any questions or suggestions, feel free to open an issue.
 
-### Credits
+## Contributors
+
+Big thanks go to these wonderful people:
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+## Credits
 
 Thanks to [remark-github-beta-blockquote-admonitions](https://github.com/myl7/remark-github-beta-blockquote-admonitions) for guidance on how to set up testing.
