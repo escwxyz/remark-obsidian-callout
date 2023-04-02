@@ -1,6 +1,6 @@
 {
   "name": "remark-obsidian-callout",
-  "version": "1.0.8",
+  "version": "1.1.0-beta.0",
   "description": "A remark plugin to parse Obsidian callouts.",
   "main": "dist/index.js",
   "type": "module",
