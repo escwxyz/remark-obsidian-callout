@@ -13,6 +13,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: PNPM
+        uses: pnpm/action-setup@v2
+
       # Setup Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -62,9 +65,13 @@ jobs:
           git commit -m "chore: release ${{ env.NEW_VERSION }}"
           git tag ${{ env.NEW_VERSION }}
 
+      # Build
+      - name: Build
+        run: pnpm build
+
       # Publish version to public repository
       - name: Publish
-        run: yarn publish --verbose --access public --tag ${{ env.RELEASE_TAG }}
+        run: pnpm publish dist --dry-run --access public --tag ${{ env.RELEASE_TAG }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
