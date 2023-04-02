@@ -200,7 +200,8 @@ const plugin: Plugin = (customConfig?: Partial<Config>) => {
 
   return function (tree) {
     visit(tree, "blockquote", (node: Node) => {
-      if (!("children" in node)) return;
+      if (!("children" in node) || (node as Parent).children.length == 0)
+        return;
 
       const firstChild = (node as Parent).children[0];
 
