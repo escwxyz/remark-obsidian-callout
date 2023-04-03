@@ -10,7 +10,7 @@ This is a [remark](https://github.com/remarkjs/remark) plugin that parses [Obsid
 
 ## Why
 
-Because I am currently building my digital garden using [Astro](https://astro.build/) and Obsidian. Despite the great support for the Markdown that Astro brings, we still need to some work to customize the rendered output.
+Because I am currently building my digital garden using [Astro](https://astro.build/) and Obsidian. Despite the great support for the Markdown that Astro brings, we still need some work to customize the rendered output.
 
 ## How to use
 
