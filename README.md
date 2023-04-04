@@ -208,3 +208,7 @@ Big thanks go to these wonderful people:
 ## Credits
 
 Thanks to [remark-github-beta-blockquote-admonitions](https://github.com/myl7/remark-github-beta-blockquote-admonitions) for guidance on how to set up testing.
+
+## License
+
+The source code is licensed under the Apache 2.0 License, while the builtin icons from [Lucide](https://lucide.dev/license) are licensed under the ISC License.

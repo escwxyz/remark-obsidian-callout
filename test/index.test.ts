@@ -5,9 +5,7 @@ import rehypeStringify from "rehype-stringify";
 import rehypeRaw from "rehype-raw";
 import plugin, { Config } from "../src/index";
 import { it, expect, describe } from "vitest";
-
-const icon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="2" x2="22" y2="6"></line><path d="M7.5 20.5 19 9l-4-4L3.5 16.5 2 22z"></path></svg>`;
-const infoIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`;
+import { infoIcon, pencilIcon } from "../src/icons";
 
 function normalizeHtml(html: string): string {
   return html.replace(/[\n\s]*(<)|>([\n\s]*)/g, (match, p1, p2) =>
@@ -65,7 +63,7 @@ describe("test default behavior", () => {
     const expectedOutput = `
     <blockquote class="callout-note" data-callout="note" data-expandable="false" data-expanded="false">
       <div class="callout-title">
-        <div class="callout-title-icon">${icon}</div>
+        <div class="callout-title-icon">${pencilIcon}</div>
         <div class="callout-title-text">This is a note callout.</div>
       </div>
       <div>This is the content!</div>
@@ -80,7 +78,7 @@ describe("test default behavior", () => {
     const expectedOutput = `
   <blockquote class="callout-note" data-callout="note" data-expandable="false" data-expanded="false">
     <div class="callout-title">
-      <div class="callout-title-icon">${icon}</div>
+      <div class="callout-title-icon">${pencilIcon}</div>
       <div class="callout-title-text">This is a note callout.</div>
     </div>
   </blockquote>`;
@@ -97,7 +95,7 @@ describe("test default behavior", () => {
     const expectedOutput = `
   <blockquote class="callout-note" data-callout="note" data-expandable="false" data-expanded="false">
     <div class="callout-title">
-      <div class="callout-title-icon">${icon}</div>
+      <div class="callout-title-icon">${pencilIcon}</div>
     </div>
     <div>This is the content!</div>
   </blockquote>`;
@@ -111,7 +109,7 @@ describe("test default behavior", () => {
     const expectedOutput = `
   <blockquote class="callout-note" data-callout="note" data-expandable="true" data-expanded="true">
     <div class="callout-title">
-      <div class="callout-title-icon">${icon}</div>
+      <div class="callout-title-icon">${pencilIcon}</div>
       <div class="callout-title-text">This is a note callout.</div>
     </div>
     <div>This is the content!</div>
@@ -126,7 +124,7 @@ describe("test default behavior", () => {
     const expectedOutput = `
   <blockquote class="callout-note" data-callout="note" data-expandable="true" data-expanded="false">
     <div class="callout-title">
-      <div class="callout-title-icon">${icon}</div>
+      <div class="callout-title-icon">${pencilIcon}</div>
       <div class="callout-title-text">This is a note callout.</div>
     </div>
     <div>This is the content!</div>
@@ -158,12 +156,12 @@ describe("test default behavior", () => {
     const expectedOutput = `
   <blockquote class="callout-note" data-callout="note" data-expandable="false" data-expanded="false">
     <div class="callout-title">
-      <div class="callout-title-icon">${icon}</div>
+      <div class="callout-title-icon">${pencilIcon}</div>
       <div class="callout-title-text">This is a note callout.</div>
     </div>
     <div>
       <div class="callout-title">
-        <div class="callout-title-icon">${icon}</div>
+        <div class="callout-title-icon">${pencilIcon}</div>
         <div class="callout-title-text">This is a nested callout.</div>
       </div>
       <div></div>
@@ -172,7 +170,6 @@ describe("test default behavior", () => {
 
     expect(normalizeHtml(html)).not.toBe(normalizeHtml(expectedOutput));
   });
-
 });
 
 describe("test custom settings", () => {
@@ -192,7 +189,7 @@ describe("test custom settings", () => {
     const expectedOutput = `
     <blockquote class="callout-note" data-callout="note" data-expandable="false" data-expanded="false">
       <div class="callout-title">
-        <span class="callout-title-icon">${icon}</span>
+        <span class="callout-title-icon">${pencilIcon}</span>
         <span class="callout-title-text">This is a note callout.</span>
       </div>
       <div>This is the content!</div>
@@ -212,7 +209,7 @@ describe("test custom settings", () => {
     const expectedOutput = `
   <blockquote class="custom-callout-note" data-custom-callout="note" data-expandable="false" data-expanded="false">
     <div class="callout-title">
-      <div class="callout-title-icon">${icon}</div>
+      <div class="callout-title-icon">${pencilIcon}</div>
       <div class="callout-title-text">This is a note callout.</div>
     </div>
     <div>This is the content!</div>
@@ -233,7 +230,7 @@ describe("test custom settings", () => {
     const expectedOutput = `
   <blockquote class="custom-callout-block" data-callout="note" data-expandable="false" data-expanded="false">
     <div class="callout-title">
-      <div class="callout-title-icon">${icon}</div>
+      <div class="callout-title-icon">${pencilIcon}</div>
       <div class="callout-title-text">This is a note callout.</div>
     </div>
     <div>This is the content!</div>
@@ -255,7 +252,7 @@ describe("test custom settings", () => {
     const expectedOutput = `
   <blockquote class="callout-note" data-callout="note" data-expandable="false" data-expanded="false">
     <div class="callout-title">
-      <div class="custom-title-icon">${icon}</div>
+      <div class="custom-title-icon">${pencilIcon}</div>
       <div class="custom-title-text">This is a note callout.</div>
     </div>
     <div>This is the content!</div>
