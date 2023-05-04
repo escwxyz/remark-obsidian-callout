@@ -1,16 +1,14 @@
-# remark-obsidian-callout
+# remark-emoji-callout
 
-[![NPM](https://img.shields.io/npm/dw/remark-obsidian-callout?style=for-the-badge)](https://www.npmjs.com/package/remark-obsidian-callout)
-
-A remark plugin to parse Obsidian's callout syntax.
+A remark plugin to parse @readme/markdown callout syntax.
 
 ## What is this
 
-This is a [remark](https://github.com/remarkjs/remark) plugin that parses [Obsidian's callout](https://help.obsidian.md/Editing+and+formatting/Callouts) syntax, and adds custom data attributes and classes to the HTML elements for further customizations.
+This is a [remark](https://github.com/remarkjs/remark) plugin that parses [Readme's callout](https://docs.readme.com/rdmd/docs/callouts) syntax.
 
 ## Why
 
-Because I am currently building my digital garden using [Astro](https://astro.build/) and Obsidian. Despite the great support for the Markdown that Astro brings, we still need some work to customize the rendered output.
+Because the `@mollify` team prefer this syntax to Obsidian, but didn't want to use `rdmd` for the whole project.
 
 ## How to use
 
@@ -21,39 +19,44 @@ First, install the plugin with your favorite package manager.
 With `npm`:
 
 ```
-npm install remark-obsidian-callout --save-dev
+npm install remark-emoji-callout --save-dev
 ```
 
 or with `pnpm`:
 
 ```
-pnpm add -D remark-obsidian-callout
+pnpm add -D remark-emoji-callout
 ```
 
-Then in your `astro.config.mjs` config file:
+Then in your `svelte.config.js` config file:
 
 ```js
-import remarkObsidianCallout from "remark-obsidian-callout";
+// ...
+import { mdsvex } from 'mdsvex';
+import callouts from "remark-emoji-callout";
 
-export default defineConfig({
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
+	// for more information about preprocessors
+	preprocess: [
+		vitePreprocess(),
+		mdsvex({
+			highlight: {},
+			extensions: ['.md'],
+			remarkPlugins: [callouts]
+		})
+	],
   // ...
-  markdown: {
-    // ...
-    remarkPlugins: [
-      // ...
-      remarkObsidianCallout,
-    ],
-  },
-  // ...
-});
+}
 ```
 
-Now we can run the dev server with `pnpm astro dev`.
+Now we can run the dev server with `npm run dev`.
 
 Say if we want to render an error callout with:
 
 ```
-> [!error] This is an error callout
+> ⚠️ This is an error callout
 > This is the content inside callout
 ```
 
@@ -61,16 +64,14 @@ The callout would be rendered as something like this:
 
 ```html
 <blockquote
-  class="callout-error"
-  data-callout="error"
-  data-expandable="false"
-  data-expanded="false"
+  class="callout ⚠️"
+  data-callout="⚠️"
 >
   <div class="callout-title">
-    <div class="callout-title-icon">
-      <!-- Predefined SVG here -->
-    </div>
-    <div class="callout-title-text">This is an error callout</div>
+    <span class="callout-title-icon">
+      ⚠️
+    </span>
+    <span class="callout-title-text">This is an error callout</span>
   </div>
   <div>This is the content inside callout</div>
 </blockquote>
@@ -84,37 +85,42 @@ blockquote[data-callout] {
   border-radius: 1rem;
 }
 
-blockquote[data-callout="error"] {
+blockquote.⚠️ {
   background-color: red;
 }
 ```
 
 ### Configuration
 
-To configure the plugin, simply add the following options to your `astro.config.mjs` file. For example:
+To configure the plugin, simply add the following options to your `svelte.config.mjs` file. For example:
 
 ```js
-import remarkObsidianCallout from "remark-obsidian-callout";
+// ...
+import { mdsvex } from 'mdsvex';
+import callouts from "remark-emoji-callout";
 
-export default defineConfig({
-  // ...
-  markdown: {
-    // ...
-    remarkPlugins: [
-      // ...
-      [
-        remarkObsidianCallout,
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
+	// for more information about preprocessors
+	preprocess: [
+		vitePreprocess(),
+		mdsvex({
+			highlight: {},
+			extensions: ['.md'],
+			remarkPlugins: [
+        callouts,
         {
           dataAttribute: "custom-callout",
           titleTextTagName: "span",
           iconTagName: "span",
           // ...
-        },
-      ],
-    ],
-  },
+        }
+      ]
+		})
+	],
   // ...
-});
+}
 ```
 
 Config Options:
@@ -137,77 +143,27 @@ export interface Config {
   iconTagName: string;
   // the custom class name to be added to the title icon element
   iconClass: string;
-  // predefined callouts, an object with callout's name as key, its SVG icon as value
-  // see https://help.obsidian.md/Editing+and+formatting/Callouts#Supported+types
-  // you can customize it by overriding the same callout's icon or passing new callout with customized name and icon
-  callouts: Record<string, unknown>;
 }
 // default configs
 const defaultConfig: Config = {
   dataAttribute: "callout",
-  blockquoteClass: undefined,
+  blockquoteClass: "callout",
   titleClass: "callout-title",
-  titleTextTagName: "div",
+  titleTextTagName: "span",
   titleTextClass: "callout-title-text",
-  titleTextTransform: (title: string) => title.trim(),
-  iconTagName: "div",
+  titleTextTransform: (title: string) => title?.trim() || "",
+  iconTagName: "span",
   iconClass: "callout-title-icon",
-  callouts: {
-    note: pencilIcon,
-    abstract: clipboardListIcon,
-    summary: clipboardListIcon,
-    tldr: clipboardListIcon,
-    info: infoIcon,
-    todo: checkCircleIcon,
-    tip: flameIcon,
-    hint: flameIcon,
-    important: flameIcon,
-    success: checkIcon,
-    check: checkIcon,
-    done: checkIcon,
-    question: helpCircleIcon,
-    help: helpCircleIcon,
-    faq: helpCircleIcon,
-    warning: alertTriangleIcon,
-    attention: alertTriangleIcon,
-    cautions: alertTriangleIcon,
-    failure: xIcon,
-    missing: xIcon,
-    fail: xIcon,
-    danger: zapIcon,
-    error: zapIcon,
-    bug: bugIcon,
-    example: listIcon,
-    quote: quoteIcon,
-    cite: quoteIcon,
-  },
 };
 ```
-
-## TODOs & Limitations
-
-- [ ] Currently does not support nested callouts, as the usecase of this should be uncommon
 
 ## Support
 
 If you have any questions or suggestions, feel free to open an issue.
 
-## Contributors
-
-Big thanks go to these wonderful people:
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
 ## Credits
 
-Thanks to [remark-github-beta-blockquote-admonitions](https://github.com/myl7/remark-github-beta-blockquote-admonitions) for guidance on how to set up testing.
+Thanks to [remark-obsidian-callout](https://github.com/escwxyz/remark-obsidian-callout) for providing the basis for this fork.
 
 ## License
 
