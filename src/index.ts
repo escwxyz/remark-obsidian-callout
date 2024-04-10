@@ -143,7 +143,7 @@ const defaultConfig: Config = {
     faq: helpCircleIcon,
     warning: alertTriangleIcon,
     attention: alertTriangleIcon,
-    cautions: alertTriangleIcon,
+    caution: alertTriangleIcon,
     failure: xIcon,
     missing: xIcon,
     fail: xIcon,
