@@ -8,10 +8,6 @@ A remark plugin to parse Obsidian's callout syntax.
 
 This is a [remark](https://github.com/remarkjs/remark) plugin that parses [Obsidian's callout](https://help.obsidian.md/Editing+and+formatting/Callouts) syntax, and adds custom data attributes and classes to the HTML elements for further customizations.
 
-## Why
-
-Because I am currently building my digital garden using [Astro](https://astro.build/) and Obsidian. Despite the great support for the Markdown that Astro brings, we still need some work to customize the rendered output.
-
 ## How to use
 
 ### Installation
@@ -170,7 +166,7 @@ const defaultConfig: Config = {
     faq: helpCircleIcon,
     warning: alertTriangleIcon,
     attention: alertTriangleIcon,
-    cautions: alertTriangleIcon,
+    caution: alertTriangleIcon,
     failure: xIcon,
     missing: xIcon,
     fail: xIcon,
