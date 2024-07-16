@@ -66,7 +66,7 @@ describe("test default behavior", () => {
         <div class="callout-title-icon">${pencilIcon}</div>
         <div class="callout-title-text">This is a note callout.</div>
       </div>
-      <div>This is the content!</div>
+      <div class="callout-content">This is the content!</div>
     </blockquote>`;
 
     expect(normalizeHtml(html)).toBe(normalizeHtml(expectedOutput));
@@ -97,7 +97,7 @@ describe("test default behavior", () => {
     <div class="callout-title">
       <div class="callout-title-icon">${pencilIcon}</div>
     </div>
-    <div>This is the content!</div>
+    <div class="callout-content">This is the content!</div>
   </blockquote>`;
 
     expect(normalizeHtml(html)).toBe(normalizeHtml(expectedOutput));
@@ -112,7 +112,7 @@ describe("test default behavior", () => {
       <div class="callout-title-icon">${pencilIcon}</div>
       <div class="callout-title-text">This is a note callout.</div>
     </div>
-    <div>This is the content!</div>
+    <div class="callout-content">This is the content!</div>
   </blockquote>`;
 
     expect(normalizeHtml(html)).toBe(normalizeHtml(expectedOutput));
@@ -127,7 +127,7 @@ describe("test default behavior", () => {
       <div class="callout-title-icon">${pencilIcon}</div>
       <div class="callout-title-text">This is a note callout.</div>
     </div>
-    <div>This is the content!</div>
+    <div class="callout-content">This is the content!</div>
   </blockquote>`;
 
     expect(normalizeHtml(html)).toBe(normalizeHtml(expectedOutput));
@@ -164,7 +164,7 @@ describe("test default behavior", () => {
         <div class="callout-title-icon">${pencilIcon}</div>
         <div class="callout-title-text">This is a nested callout.</div>
       </div>
-      <div></div>
+      <div class="callout-content"></div>
     </div>
   </blockquote>`;
 
@@ -192,7 +192,7 @@ describe("test custom settings", () => {
         <span class="callout-title-icon">${pencilIcon}</span>
         <span class="callout-title-text">This is a note callout.</span>
       </div>
-      <div>This is the content!</div>
+      <div class="callout-content">This is the content!</div>
     </blockquote>`;
 
     expect(normalizeHtml(html)).toBe(normalizeHtml(expectedOutput));
@@ -212,7 +212,7 @@ describe("test custom settings", () => {
       <div class="callout-title-icon">${pencilIcon}</div>
       <div class="callout-title-text">This is a note callout.</div>
     </div>
-    <div>This is the content!</div>
+    <div class="callout-content">This is the content!</div>
   </blockquote>`;
 
     expect(normalizeHtml(html)).toBe(normalizeHtml(expectedOutput));
@@ -233,7 +233,7 @@ describe("test custom settings", () => {
       <div class="callout-title-icon">${pencilIcon}</div>
       <div class="callout-title-text">This is a note callout.</div>
     </div>
-    <div>This is the content!</div>
+    <div class="callout-content">This is the content!</div>
   </blockquote>`;
 
     expect(normalizeHtml(html)).toBe(normalizeHtml(expectedOutput));
@@ -255,7 +255,7 @@ describe("test custom settings", () => {
       <div class="custom-title-icon">${pencilIcon}</div>
       <div class="custom-title-text">This is a note callout.</div>
     </div>
-    <div>This is the content!</div>
+    <div class="callout-content">This is the content!</div>
   </blockquote>`;
 
     expect(normalizeHtml(html)).toBe(normalizeHtml(expectedOutput));
@@ -280,7 +280,7 @@ describe("test custom settings", () => {
         <div class="callout-title-icon">${icon}</div>
         <div class="callout-title-text">This is a note callout.</div>
       </div>
-      <div>This is the content!</div>
+      <div class="callout-content">This is the content!</div>
     </blockquote>`;
 
     expect(normalizeHtml(html)).toBe(normalizeHtml(expectedOutput));
@@ -308,9 +308,32 @@ describe("test custom settings", () => {
         <div class="callout-title-icon">${customIcon}</div>
         <div class="callout-title-text">This is a custom callout.</div>
       </div>
-      <div>This is the content!</div>
+      <div class="callout-content">This is the content!</div>
     </blockquote>`;
 
     expect(normalizeHtml(html)).toBe(normalizeHtml(expectedOutput));
   });
+
+  it("should allow to custom content class", async () => {
+    const customContentClass = "custom-callout-content";
+
+    const html = await parseMarkdown(
+      noteInput, 
+      {
+        contentClass: customContentClass,
+      }, 
+      false,
+    );
+
+    const expectedOutput = `
+    <blockquote class="callout-note" data-callout="note" data-expandable="false" data-expanded="false">
+    <div class="callout-title">
+      <div class="callout-title-icon">${pencilIcon}</div>
+      <div class="callout-title-text">This is a note callout.</div>
+    </div>
+    <div class="custom-callout-content">This is the content!</div>
+  </blockquote>`;
+
+    expect(normalizeHtml(html)).toBe(normalizeHtml(expectedOutput));
+  })
 });

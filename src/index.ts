@@ -98,6 +98,13 @@ export interface Config {
    */
   iconClass: string;
   /**
+   * the custom class name to be added to the title icon element
+   * @date 7/16/2024 - 7:20:26 PM
+   *
+   * @type {string}
+   */
+  contentClass: string;
+  /**
    * predefined callouts, an object with callout's name as key, its SVG icon as value,
    *
    * see https://help.obsidian.md/Editing+and+formatting/Callouts#Supported+types,
@@ -125,6 +132,7 @@ const defaultConfig: Config = {
   titleTextTransform: (title: string) => title.trim(),
   iconTagName: "div",
   iconClass: "callout-title-icon",
+  contentClass: "callout-content",
   callouts: {
     note: pencilIcon,
     abstract: clipboardListIcon,
@@ -193,6 +201,7 @@ const plugin: Plugin = (customConfig?: Partial<Config>) => {
     titleClass,
     iconTagName,
     iconClass,
+    contentClass,
     callouts,
     titleTextClass,
     titleTextTagName,
@@ -239,7 +248,7 @@ const plugin: Plugin = (customConfig?: Partial<Config>) => {
                )}</${titleTextTagName}>`
              }
               </div>
-              ${remainingContent && `<div>${remainingContent}</div>`}`,
+              ${remainingContent && `<div class="${contentClass}">${remainingContent}</div>`}`,
             };
 
             (node as Parent).children.splice(0, 1, titleHtmlNode);
