@@ -98,7 +98,7 @@ export interface Config {
    */
   iconClass: string;
   /**
-   * the custom class name to be added to the title icon element
+   * the custom class name to be added to the content element
    * @date 7/16/2024 - 7:20:26 PM
    *
    * @type {string}

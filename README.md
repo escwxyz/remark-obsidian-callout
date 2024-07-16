@@ -68,7 +68,7 @@ The callout would be rendered as something like this:
     </div>
     <div class="callout-title-text">This is an error callout</div>
   </div>
-  <div>This is the content inside callout</div>
+  <div class="callout-content">This is the content inside callout</div>
 </blockquote>
 ```
 
@@ -83,6 +83,34 @@ blockquote[data-callout] {
 blockquote[data-callout="error"] {
   background-color: red;
 }
+
+[data-expanded="false"] .callout-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+[data-expanded="true"] .callout-content {
+  max-height: 100px; /* or whatever height needed */
+}
+
+[data-expandable="true"] .callout-title {
+  cursor: pointer;
+}
+```
+
+```js
+const callout = document.querySelector('.callout-error');
+
+callout.addEventListener('click', () => {
+  if(callout.getAttribute('data-expandable') === 'true') {
+    if(callout.getAttribute('data-expanded') === 'false') {
+      callout.setAttribute('data-expanded', 'true');
+    } else {
+      callout.setAttribute('data-expanded', 'false');
+    }
+  }
+});
 ```
 
 ### Configuration
@@ -133,6 +161,8 @@ export interface Config {
   iconTagName: string;
   // the custom class name to be added to the title icon element
   iconClass: string;
+  // the custom class name to be added to the content element
+  contentClass: string;
   // predefined callouts, an object with callout's name as key, its SVG icon as value
   // see https://help.obsidian.md/Editing+and+formatting/Callouts#Supported+types
   // you can customize it by overriding the same callout's icon or passing new callout with customized name and icon
@@ -148,6 +178,7 @@ const defaultConfig: Config = {
   titleTextTransform: (title: string) => title.trim(),
   iconTagName: "div",
   iconClass: "callout-title-icon",
+  contentClass: "callout-content",
   callouts: {
     note: pencilIcon,
     abstract: clipboardListIcon,
