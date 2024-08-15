@@ -259,7 +259,7 @@ const plugin: Plugin = (customConfig?: Partial<Config>) => {
             node.data = {
               hProperties: {
                 ...((node.data && node.data.hProperties) || {}),
-                className: blockquoteClass || `${dataAttribute}-${calloutType}`,
+                className: blockquoteClass || `${dataAttribute}-${calloutType.toLowerCase()}`,
                 [`data-${dataAttribute}`]: calloutType,
                 "data-expandable": String(dataExpandable),
                 "data-expanded": String(dataExpanded),
