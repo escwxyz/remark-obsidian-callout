@@ -175,7 +175,7 @@ const REGEX = /^\[\!(\w+)\]([+-]?)/;
  * @returns {boolean}
  */
 function containsKey(obj: Callout, str: string): boolean {
-  return Object.keys(obj).includes(str);
+  return Object.keys(obj).includes(str.toLowerCase());
 }
 
 /**
@@ -239,7 +239,7 @@ const plugin: Plugin = (customConfig?: Partial<Config>) => {
               value: `
               <div class="${titleClass}">
                 <${iconTagName} class="${iconClass}">${
-                callouts[calloutType]
+                callouts[calloutType.toLowerCase()]
               }</${iconTagName}>
              ${
                title &&
@@ -259,7 +259,7 @@ const plugin: Plugin = (customConfig?: Partial<Config>) => {
             node.data = {
               hProperties: {
                 ...((node.data && node.data.hProperties) || {}),
-                className: blockquoteClass || `${dataAttribute}-${calloutType}`,
+                className: blockquoteClass || `${dataAttribute}-${calloutType.toLowerCase()}`,
                 [`data-${dataAttribute}`]: calloutType,
                 "data-expandable": String(dataExpandable),
                 "data-expanded": String(dataExpanded),
