@@ -1,28 +1,31 @@
 name: Unit Test
 
-on: [push, pull_request]
+on:
+  - push
+  - pull_request
 
 jobs:
-  test:
+  cache-and-install:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x]
-
     steps:
-      - uses: actions/checkout@main
-      - uses: pnpm/action-setup@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
-          version: 8
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@main
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "pnpm"
+          node-version: 20
+          cache: 'pnpm'
+
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Format code
+        run: pnpm install
+
+      - name: Format Code
         run: pnpm format
-      - name: Run tests
+
+      - name: Test
         run: pnpm test
