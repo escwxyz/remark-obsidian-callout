@@ -42,7 +42,7 @@
     "unist-util-visit": "^4.1.2"
   },
   "devDependencies": {
-    "@types/unist": "^2.0.6",
+    "@types/unist": "^3.0.3",
     "mdast-util-to-string": "^3.1.1",
     "prettier": "^3.3.3",
     "rehype-raw": "^6.1.1",
