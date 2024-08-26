@@ -50,7 +50,7 @@
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
     "typescript": "^5.0.2",
-    "unified": "^10.1.2",
+    "unified": "^11.0.5",
     "vitest": "^2.0.5"
   }
 }
