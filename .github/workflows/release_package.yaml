@@ -97,7 +97,7 @@ jobs:
 
       # Update GitHub release with changelog
       - name: Update GitHub release documentation
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.NEW_VERSION }}
           body: ${{ steps.get-changelog.outputs.changelog }}
