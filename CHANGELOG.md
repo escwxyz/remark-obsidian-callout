@@ -6,16 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Fixed
-
-- Removed case sensitivity (#25)
-
+## 1.4.0 - 2024-08-28
 ### Changed
-
 - Update dependencies
 
-## 1.3.2 - 2024-07-16
+### Fixed
+- Removed case sensitivity (#25)
 
+## 1.3.2 - 2024-07-16
 ### Changed
 - Added License notice for lucide icons
 
