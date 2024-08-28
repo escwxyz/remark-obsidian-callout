@@ -22,10 +22,14 @@ import {
  * Callout object with callout type as its key and icon as its value
  * @date 3/23/2023 - 5:16:27 PM
  *
- * @typedef {Callout}
  */
 type Callout = Record<string, unknown>;
 
+interface ExtendedNode extends Node {
+  data?: {
+    hProperties?: Record<string, unknown>;
+  };
+}
 interface HtmlNode extends Node {
   type: "html";
   data: Data;
@@ -38,7 +42,6 @@ interface HtmlNode extends Node {
  *
  * @export
  * @interface Config
- * @typedef {Config}
  */
 export interface Config {
   /**
@@ -183,9 +186,9 @@ function containsKey(obj: Callout, str: string): boolean {
  * @date 3/23/2023 - 5:16:26 PM
  *
  * @param {?Partial<Config>} [customConfig]
- * @returns {(tree: any) => void}
+ * @returns {(tree: Node) => void}
  */
-const plugin: Plugin = (customConfig?: Partial<Config>) => {
+const plugin: Plugin = (customConfig?: Partial<Config>): (tree: Node) => void => {
   const mergedConfig = {
     ...defaultConfig,
     ...customConfig,
@@ -208,8 +211,8 @@ const plugin: Plugin = (customConfig?: Partial<Config>) => {
     titleTextTransform,
   } = mergedConfig;
 
-  return function (tree) {
-    visit(tree, "blockquote", (node: Node) => {
+  return function (tree: Node): void {
+    visit(tree, "blockquote", (node: ExtendedNode) => {
       if (!("children" in node) || (node as Parent).children.length == 0)
         return;
 
@@ -238,15 +241,13 @@ const plugin: Plugin = (customConfig?: Partial<Config>) => {
               data: {},
               value: `
               <div class="${titleClass}">
-                <${iconTagName} class="${iconClass}">${
-                callouts[calloutType.toLowerCase()]
-              }</${iconTagName}>
-             ${
-               title &&
-               `<${titleTextTagName} class="${titleTextClass}">${titleTextTransform(
-                 title
-               )}</${titleTextTagName}>`
-             }
+                <${iconTagName} class="${iconClass}">${callouts[calloutType.toLowerCase()]
+                }</${iconTagName}>
+             ${title &&
+                `<${titleTextTagName} class="${titleTextClass}">${titleTextTransform(
+                  title
+                )}</${titleTextTagName}>`
+                }
               </div>
               ${remainingContent && `<div class="${contentClass}">${remainingContent}</div>`}`,
             };
