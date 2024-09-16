@@ -35,7 +35,7 @@ importers:
         version: 11.1.0
       typescript:
         specifier: ^5.0.2
-        version: 5.5.4
+        version: 5.6.2
       unified:
         specifier: ^11.0.5
         version: 11.0.5
@@ -608,8 +608,8 @@ packages:
   trough@2.2.0:
     resolution: {integrity: sha512-tmMpK00BjZiUyVyvrBK7knerNgmgvcV/KLVyuma/SC+TQN167GrMRciANTz09+k3zW8L8t60jWO1GpfkZdjTaw==}
 
-  typescript@5.5.4:
-    resolution: {integrity: sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==}
+  typescript@5.6.2:
+    resolution: {integrity: sha512-NW8ByodCSNCwZeghjN3o+JX5OFH0Ojg6sadjEKY4huZ52TqbJTJnDo5+Tw98lSy63NZvi4n+ez5m2u5d4PkZyw==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -1342,7 +1342,7 @@ snapshots:
 
   trough@2.2.0: {}
 
-  typescript@5.5.4: {}
+  typescript@5.6.2: {}
 
   undici-types@6.19.8:
     optional: true
