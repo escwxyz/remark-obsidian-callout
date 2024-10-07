@@ -166,7 +166,7 @@ export interface Config {
   // predefined callouts, an object with callout's name as key, its SVG icon as value
   // see https://help.obsidian.md/Editing+and+formatting/Callouts#Supported+types
   // you can customize it by overriding the same callout's icon or passing new callout with customized name and icon
-  callouts: Record<string, unknown>;
+  callouts: Record<string, string>;
 }
 // default configs
 const defaultConfig: Config = {
@@ -218,19 +218,6 @@ const defaultConfig: Config = {
 ## Support
 
 If you have any questions or suggestions, feel free to open an issue.
-
-## Contributors
-
-Big thanks go to these wonderful people:
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ## Credits
 
