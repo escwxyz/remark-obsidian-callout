@@ -100,14 +100,14 @@ blockquote[data-callout="error"] {
 ```
 
 ```js
-const callout = document.querySelector('.callout-error');
+const callout = document.querySelector(".callout-error");
 
-callout.addEventListener('click', () => {
-  if(callout.getAttribute('data-expandable') === 'true') {
-    if(callout.getAttribute('data-expanded') === 'false') {
-      callout.setAttribute('data-expanded', 'true');
+callout.addEventListener("click", () => {
+  if (callout.getAttribute("data-expandable") === "true") {
+    if (callout.getAttribute("data-expanded") === "false") {
+      callout.setAttribute("data-expanded", "true");
     } else {
-      callout.setAttribute('data-expanded', 'false');
+      callout.setAttribute("data-expanded", "false");
     }
   }
 });

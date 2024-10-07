@@ -113,11 +113,11 @@ export interface Config {
    * see https://help.obsidian.md/Editing+and+formatting/Callouts#Supported+types,
    *
    * you can customize it by overriding the same callout's icon or passing new callout with customized name and icon
-   * @date 3/23/2023 - 5:16:26 PM
+   * @date 10/07/2024 - 8:16:26 PM
    *
-   * @type {Record<string, unknown>}
+   * @type {Record<string, string>}
    */
-  callouts: Record<string, unknown>;
+  callouts: Record<string, string>;
 }
 
 /**
@@ -177,10 +177,22 @@ const REGEX = /^\[\!(\w+)\]([+-]?)/;
  * @param {string} str
  * @returns {boolean}
  */
-function containsKey(obj: Callout, str: string): boolean {
-  return Object.keys(obj).includes(str.toLowerCase());
-}
+const memoizedContainsKey = memoize((obj: Callout, str: string) =>
+  Object.keys(obj).includes(str.toLowerCase())
+);
 
+function memoize<T extends (...args: any[]) => any>(fn: T): T {
+  const cache = new Map();
+  return ((...args: Parameters<T>): ReturnType<T> => {
+    const key = JSON.stringify(args);
+    if (cache.has(key)) {
+      return cache.get(key);
+    }
+    const result = fn(...args);
+    cache.set(key, result);
+    return result;
+  }) as T;
+}
 /**
  * This is a remark plugin that parses Obsidian's callout syntax, and adds custom data attributes and classes to the HTML elements for further customizations.
  * @date 3/23/2023 - 5:16:26 PM
@@ -188,7 +200,9 @@ function containsKey(obj: Callout, str: string): boolean {
  * @param {?Partial<Config>} [customConfig]
  * @returns {(tree: Node) => void}
  */
-const plugin: Plugin = (customConfig?: Partial<Config>): (tree: Node) => void => {
+const plugin: Plugin = (
+  customConfig?: Partial<Config>
+): ((tree: Node) => void) => {
   const mergedConfig = {
     ...defaultConfig,
     ...customConfig,
@@ -233,23 +247,38 @@ const plugin: Plugin = (customConfig?: Partial<Config>): (tree: Node) => void =>
 
           const expandCollapseSign = array?.at(2);
 
-          if (array && calloutType && containsKey(callouts, calloutType)) {
+          if (array && calloutType) {
+            let icon: string;
+            let validCalloutType: string;
+
+            if (memoizedContainsKey(callouts, calloutType)) {
+              icon = callouts[calloutType.toLowerCase()];
+              validCalloutType = calloutType.toLowerCase();
+            } else {
+              console.warn(
+                `Callout type ${calloutType} is not supported, using default icon for note instead.`
+              );
+              icon = callouts.note;
+              validCalloutType = "note";
+            }
+
             const title = array.input.slice(matched[0].length).trim();
 
             const titleHtmlNode: HtmlNode = {
               type: "html",
               data: {},
               value: `
-              <div class="${titleClass}">
-                <${iconTagName} class="${iconClass}">${callouts[calloutType.toLowerCase()]
-                }</${iconTagName}>
-             ${title &&
-                `<${titleTextTagName} class="${titleTextClass}">${titleTextTransform(
-                  title
-                )}</${titleTextTagName}>`
-                }
-              </div>
-              ${remainingContent && `<div class="${contentClass}">${remainingContent}</div>`}`,
+                <div class="${titleClass}">
+                  <${iconTagName} class="${iconClass}">${icon}</${iconTagName}>
+                  ${
+                    title &&
+                    `<${titleTextTagName} class="${titleTextClass}">${titleTextTransform(
+                      title
+                    )}</${titleTextTagName}>`
+                  }
+                </div>
+                ${remainingContent && `<div class="${contentClass}">${remainingContent}</div>`}
+              `,
             };
 
             (node as Parent).children.splice(0, 1, titleHtmlNode);
@@ -260,8 +289,9 @@ const plugin: Plugin = (customConfig?: Partial<Config>): (tree: Node) => void =>
             node.data = {
               hProperties: {
                 ...((node.data && node.data.hProperties) || {}),
-                className: blockquoteClass || `${dataAttribute}-${calloutType.toLowerCase()}`,
-                [`data-${dataAttribute}`]: calloutType,
+                className:
+                  blockquoteClass || `${dataAttribute}-${validCalloutType}`,
+                [`data-${dataAttribute}`]: validCalloutType,
                 "data-expandable": String(dataExpandable),
                 "data-expanded": String(dataExpanded),
               },

@@ -1,13 +1,7 @@
 {
-  "include": [
-    "src",
-    "test"
-  ],
+  "include": ["src", "test"],
   "compilerOptions": {
-    "lib": [
-      "ESNext",
-      "dom"
-    ],
+    "lib": ["ESNext", "dom"],
     "module": "ESNext",
     "target": "ESNext",
     "strict": true,

@@ -1,10 +1,10 @@
-import { unified } from "unified";
+import { unified, type Plugin } from "unified";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 import rehypeRaw from "rehype-raw";
 import plugin, { Config } from "../src/index";
-import { it, expect, describe } from "vitest";
+import { it, expect, describe, vi } from "vitest";
 import { infoIcon, pencilIcon } from "../src/icons";
 
 function normalizeHtml(html: string): string {
@@ -15,12 +15,12 @@ function normalizeHtml(html: string): string {
 
 async function parseMarkdown(
   md: string,
-  options?: Partial<Config>,
-  debug?: boolean
+  options: Partial<Config> = {},
+  debug: boolean = false
 ) {
   const processor = unified()
     .use(remarkParse)
-    .use(plugin, options)
+    .use(plugin as Plugin<[Partial<Config>]>, options)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
     .use(rehypeStringify);
@@ -318,11 +318,11 @@ describe("test custom settings", () => {
     const customContentClass = "custom-callout-content";
 
     const html = await parseMarkdown(
-      noteInput, 
+      noteInput,
       {
         contentClass: customContentClass,
-      }, 
-      false,
+      },
+      false
     );
 
     const expectedOutput = `
@@ -335,5 +335,45 @@ describe("test custom settings", () => {
   </blockquote>`;
 
     expect(normalizeHtml(html)).toBe(normalizeHtml(expectedOutput));
-  })
+  });
+
+  it("should fallback to note type for unsupported callout", async () => {
+    const unsupportedInput = `
+> [!unsupported] This is an unsupported callout type
+> This is the content!
+    `;
+
+    const html = await parseMarkdown(unsupportedInput);
+
+    const expectedOutput = `
+<blockquote class="callout-note" data-callout="note" data-expandable="false" data-expanded="false">
+  <div class="callout-title">
+    <div class="callout-title-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="2" x2="22" y2="6"></line><path d="M7.5 20.5 19 9l-4-4L3.5 16.5 2 22z"></path></svg></div>
+    <div class="callout-title-text">This is an unsupported callout type</div>
+  </div>
+  <div class="callout-content">This is the content!</div>
+</blockquote>
+    `;
+
+    expect(normalizeHtml(html)).toBe(normalizeHtml(expectedOutput));
+  });
+
+  it("should log a warning for unsupported callout type", async () => {
+    const consoleWarnSpy = vi
+      .spyOn(console, "warn")
+      .mockImplementation(() => {});
+
+    const unsupportedInput = `
+> [!unsupported] This is an unsupported callout type
+> This is the content!
+    `;
+
+    await parseMarkdown(unsupportedInput);
+
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      "Callout type unsupported is not supported, using default icon for note instead."
+    );
+
+    consoleWarnSpy.mockRestore();
+  });
 });
