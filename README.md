@@ -1,6 +1,9 @@
 # remark-obsidian-callout
 
-[![NPM](https://img.shields.io/npm/dw/remark-obsidian-callout?style=for-the-badge)](https://www.npmjs.com/package/remark-obsidian-callout)
+[![CI](https://github.com/escwxyz/remark-obsidian-callout/actions/workflows/unit_test.yaml/badge.svg)](https://github.com/escwxyz/remark-obsidian-callout/actions/workflows/unit_test.yaml)
+[![npm version](https://badge.fury.io/js/remark-obsidian-callout.svg)](https://badge.fury.io/js/remark-obsidian-callout)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-yellow.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Downloads](https://img.shields.io/npm/dt/remark-obsidian-callout.svg)](https://www.npmjs.com/package/remark-obsidian-callout)
 
 A remark plugin to parse Obsidian's callout syntax.
 
