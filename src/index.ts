@@ -16,7 +16,7 @@ import {
   checkCircleIcon,
   flameIcon,
   checkIcon,
-} from "./icons";
+} from "./icons.js";
 
 /**
  * Callout object with callout type as its key and icon as its value

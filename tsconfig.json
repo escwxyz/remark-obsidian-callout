@@ -1,8 +1,8 @@
 {
   "include": ["src", "test"],
   "compilerOptions": {
-    "lib": ["ESNext", "dom"],
-    "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "module": "NodeNext",
     "target": "ESNext",
     "strict": true,
     "esModuleInterop": true,
@@ -11,7 +11,7 @@
     "outDir": "dist",
     "declaration": true,
     "declarationDir": "dist",
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "downlevelIteration": true
   }
 }

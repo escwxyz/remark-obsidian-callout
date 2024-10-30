@@ -3,9 +3,9 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 import rehypeRaw from "rehype-raw";
-import plugin, { Config } from "../src/index";
+import plugin, { Config } from "../src/index.js";
 import { it, expect, describe, vi } from "vitest";
-import { infoIcon, pencilIcon } from "../src/icons";
+import { infoIcon, pencilIcon } from "../src/icons.js";
 
 function normalizeHtml(html: string): string {
   return html.replace(/[\n\s]*(<)|>([\n\s]*)/g, (match, p1, p2) =>
