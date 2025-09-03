@@ -7,6 +7,10 @@
 
 A remark plugin to parse Obsidian's callout syntax.
 
+> [!NOTE]
+> NOT MAINTAINED ANYMORE.
+> Please use [rehype-callouts](https://github.com/lin-stephanie/rehype-callouts) instead.
+
 ## What is this
 
 This is a [remark](https://github.com/remarkjs/remark) plugin that parses [Obsidian's callout](https://help.obsidian.md/Editing+and+formatting/Callouts) syntax, and adds custom data attributes and classes to the HTML elements for further customizations.
